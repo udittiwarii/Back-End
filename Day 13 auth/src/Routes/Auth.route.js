@@ -14,11 +14,10 @@ router.post('/register', async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
 
-
+    res.cookie('token', token)
     res.status(201).send({
         message: "user registered",
-        user,
-        token
+        user
     })
 });
 
@@ -49,7 +48,7 @@ router.post('/login', async (req, res) => {
 })
 
 router.get('/user', async (req, res) => {
-    const { token } = req.body;
+    const { token } = req.cookies;
 
     if (!token) {
         return res.status(401).json({
